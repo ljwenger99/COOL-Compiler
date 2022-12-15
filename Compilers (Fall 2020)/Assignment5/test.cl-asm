@@ -1,0 +1,266 @@
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Bool..vtable:           ;; virtual function table for Bool
+                        constant string1
+                        constant Bool..new
+                        constant Object.abort
+                        constant Object.copy
+                        constant Object.type_name
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+IO..vtable:             ;; virtual function table for IO
+                        constant string2
+                        constant IO..new
+                        constant Object.abort
+                        constant Object.copy
+                        constant Object.type_name
+                        constant IO.in_int
+                        constant IO.in_string
+                        constant IO.out_int
+                        constant IO.out_string
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Int..vtable:            ;; virtual function table for Int
+                        constant string3
+                        constant Int..new
+                        constant Object.abort
+                        constant Object.copy
+                        constant Object.type_name
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Main..vtable:           ;; virtual function table for Main
+                        constant string4
+                        constant Main..new
+                        constant Object.abort
+                        constant Object.copy
+                        constant Object.type_name
+                        constant IO.in_int
+                        constant IO.in_string
+                        constant IO.out_int
+                        constant IO.out_string
+                        constant Main.main
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Object..vtable:         ;; virtual function table for Object
+                        constant string5
+                        constant Object..new
+                        constant Object.abort
+                        constant Object.copy
+                        constant Object.type_name
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+String..vtable:         ;; virtual function table for String
+                        constant string6
+                        constant String..new
+                        constant Object.abort
+                        constant Object.copy
+                        constant Object.type_name
+                        constant String.concat
+                        constant String.length
+                        constant String.substr
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Bool..new:              ;; constructor for Bool
+                        mov fp <- sp
+                        push ra
+                        li r0 <- 2
+                        alloc r0 r0
+                        la r1 <- Bool..vtable
+                        st r0[0] <- r1
+                        li r1 <- 0
+                        st r0[1] <- r1
+                        mov r1 <- r0
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+IO..new:                ;; constructor for IO
+                        mov fp <- sp
+                        push ra
+                        li r0 <- 1
+                        alloc r0 r0
+                        la r1 <- IO..vtable
+                        st r0[0] <- r1
+                        mov r1 <- r0
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Int..new:               ;; constructor for Int
+                        mov fp <- sp
+                        push ra
+                        li r0 <- 2
+                        alloc r0 r0
+                        la r1 <- Int..vtable
+                        st r0[0] <- r1
+                        li r1 <- 0
+                        st r0[1] <- r1
+                        mov r1 <- r0
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Main..new:              ;; constructor for Main
+                        mov fp <- sp
+                        push ra
+                        li r0 <- 1
+                        alloc r0 r0
+                        la r1 <- Main..vtable
+                        st r0[0] <- r1
+                        mov r1 <- r0
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Object..new:            ;; constructor for Object
+                        mov fp <- sp
+                        push ra
+                        li r0 <- 1
+                        alloc r0 r0
+                        la r1 <- Object..vtable
+                        st r0[0] <- r1
+                        mov r1 <- r0
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+String..new:            ;; constructor for String
+                        mov fp <- sp
+                        push ra
+                        li r0 <- 2
+                        alloc r0 r0
+                        la r1 <- String..vtable
+                        st r0[0] <- r1
+                        la r1 <- string0
+                        st r0[1] <- r1
+                        mov r1 <- r0
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+IO.in_int:              ;; method definition
+                        mov fp <- sp
+                        push ra
+                        syscall IO.in_int
+                        push r1
+                        push fp
+                        push r0
+                        la r2 <- Int..new
+                        call r2	;; create the new object (in r1)
+                        pop r0
+                        pop fp
+                        pop r2
+                        st r1[1] <- r2	;; int value in returned object
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+IO.in_string:           ;; method definition
+                        mov fp <- sp
+                        push ra
+                        syscall IO.in_string
+                        push r1
+                        push fp
+                        push r0
+                        la r2 <- String..new
+                        call r2	;; create the new object (in r1)
+                        pop r0
+                        pop fp
+                        pop r2
+                        st r1[1] <- r2	;; string pointer in returned object
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+IO.out_int:             ;; method definition
+                        mov fp <- sp
+                        push ra
+                        ld r1 <- fp[3]
+                        ld r1 <- r1[1]
+                        syscall IO.out_int
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+IO.out_string:          ;; method definition
+                        mov fp <- sp
+                        push ra
+                        ld r1 <- fp[3]
+                        ld r1 <- r1[1]
+                        syscall IO.out_string
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Main.main:              ;; method definition
+                        mov fp <- sp
+                        push ra
+                        push fp
+                        push r0
+                        la r2 <- Int..new
+                        call r2	;; create the new object (in r1)
+                        pop r0
+                        pop fp
+                        li r2 <- 4
+                        st r1[1] <- r2
+                        ld r2 <- r1[1]	;; value from Int
+                        push r2
+                        push fp
+                        push r0
+                        la r2 <- Int..new
+                        call r2	;; create the new object (in r1)
+                        pop r0
+                        pop fp
+                        li r2 <- 7
+                        st r1[1] <- r2
+                        pop r2
+                        ld r1 <- r1[1]	;; value from Int
+                        blt r2 r1 truebool1
+                        li r1 <- 0
+                        st r1[1] <- r2	;; 0 result in returned object
+truebool1:              
+                        li r1 <- 1
+                        st r1[1] <- r1	;; 1 result in returned result
+                        ld r1 <- r1[1]	;; value from Bool
+                        bz r1 ifzero1
+                        li r2 <- 0
+                        st r1[1] <- r2
+                        jmp finished1
+ifzero1:                
+                        li r2 <- 1
+                        st r1[1] <- r2
+finished1:              
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Object.abort:           ;; method definition
+                        mov fp <- sp
+                        push ra
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Object.copy:            ;; method definition
+                        mov fp <- sp
+                        push ra
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Object.type_name:       ;; method definition
+                        mov fp <- sp
+                        push ra
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+String.concat:          ;; method definition
+                        mov fp <- sp
+                        push ra
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+String.length:          ;; method definition
+                        mov fp <- sp
+                        push ra
+                        pop ra
+                        return
+                        ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+String.substr:          ;; method definition
+                        mov fp <- sp
+                        push ra
+                        pop ra
+                        return
+string0:                constant ""
+string1:                constant "Bool"
+string2:                constant "IO"
+string3:                constant "Int"
+string4:                constant "Main"
+string5:                constant "Object"
+string6:                constant "String"
+start:                  
+                        la r1 <- Main..new
+                        call r1
+                        la r1 <- Main.main
+                        call r1
+                        syscall exit

@@ -1,0 +1,10 @@
+void sum(int a, int b) {
+	print("A");
+	print("B");
+	print("C");
+	print("D");
+	}
+
+void main() {sum(4,6);}
+
+/* minimal but works */
